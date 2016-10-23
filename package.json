@@ -1,0 +1,21 @@
+{
+  "name": "acrcloud",
+  "version": "1.0.0",
+  "description": "Recognize audio recordings with the ACRCloud recognition API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "acr",
+    "acrcloud",
+    "audio",
+    "music",
+    "song"
+  ],
+  "author": "Arron Hunt",
+  "license": "ISC",
+  "dependencies": {
+      "request": "latest"
+  }
+}
