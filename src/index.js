@@ -1,6 +1,6 @@
-var crypto = require('crypto');
+var crypto = require('crypto')
 var request = require('request')
-var fs = require('fs');
+var fs = require('fs')
 
 function acr(props) {
     this.defaultOptions = {
@@ -13,32 +13,32 @@ function acr(props) {
         audio_format: props.audio_format || '',
         sample_rate: props.sample_rate || '',
         audio_channels: props.audio_channels || ''
-    };
+    }
 }
 
 acr.prototype.buildStringToSign = function(method, uri, accessKey, dataType, signatureVersion, timestamp) {
-    return [method, uri, accessKey, dataType, signatureVersion, timestamp].join('\n');
+    return [method, uri, accessKey, dataType, signatureVersion, timestamp].join('\n')
 }
 acr.prototype.sign = function(signString, accessSecret) {
     return crypto.createHmac('sha1', accessSecret)
         .update(new Buffer(signString, 'utf-8'))
-        .digest().toString('base64');
+        .digest().toString('base64')
 }
 
 acr.prototype.identify = function(path, callback) {
-    var current_date = new Date();
-    var timestamp = current_date.getTime()/1000;
+    var current_date = new Date()
+    var timestamp = current_date.getTime()/1000
 
     var stringToSign = this.buildStringToSign('POST',
         this.defaultOptions.endpoint,
         this.defaultOptions.access_key,
         this.defaultOptions.data_type,
         this.defaultOptions.signature_version,
-        timestamp);
+        timestamp)
 
-    var signature = this.sign(stringToSign, this.defaultOptions.access_secret);
+    var signature = this.sign(stringToSign, this.defaultOptions.access_secret)
 
-    var sampleData = new Buffer(fs.readFileSync(path));
+    var sampleData = new Buffer(fs.readFileSync(path))
 
     var formData = {
         sample: sampleData,
@@ -56,7 +56,7 @@ acr.prototype.identify = function(path, callback) {
         url: "http://"+this.defaultOptions.host + this.defaultOptions.endpoint,
         method: 'POST',
         formData: formData
-    }, callback);
+    }, callback)
 }
 
 module.exports = acr
