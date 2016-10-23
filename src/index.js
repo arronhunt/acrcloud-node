@@ -1,3 +1,5 @@
+"use strict"
+
 var crypto = require('crypto')
 var request = require('request')
 var fs = require('fs')
@@ -26,21 +28,21 @@ acr.prototype.sign = function(signString, accessSecret) {
 }
 
 acr.prototype.identify = function(path, callback) {
-    var current_date = new Date()
-    var timestamp = current_date.getTime()/1000
+    let current_date = new Date()
+    let timestamp = current_date.getTime()/1000
 
-    var stringToSign = this.buildStringToSign('POST',
+    let stringToSign = this.buildStringToSign('POST',
         this.defaultOptions.endpoint,
         this.defaultOptions.access_key,
         this.defaultOptions.data_type,
         this.defaultOptions.signature_version,
         timestamp)
 
-    var signature = this.sign(stringToSign, this.defaultOptions.access_secret)
+    let signature = this.sign(stringToSign, this.defaultOptions.access_secret)
 
-    var sampleData = new Buffer(fs.readFileSync(path))
+    let sampleData = new Buffer(fs.readFileSync(path))
 
-    var formData = {
+    let formData = {
         sample: sampleData,
         access_key:this.defaultOptions.access_key,
         data_type:this.defaultOptions.data_type,
@@ -59,8 +61,8 @@ acr.prototype.identify = function(path, callback) {
     }, function(err, httpResponse, body) {
         if (err) console.log(err);
 
-        var JSONBody = JSON.parse(body)
-        var code = JSONBody.status.code
+        let JSONBody = JSON.parse(body)
+        let code = JSONBody.status.code
         switch (code) {
             case 0:
                 callback(body)
