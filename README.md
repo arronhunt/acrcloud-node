@@ -1,5 +1,4 @@
 # ACRCloud API npm module
----
 
 ## How to use
 Before you can begin identifying audio with ACRCloud's API, you need to sign up for a free trial over at https://www.acrcloud.com and create an Audio & Video recognition project. This will generate a `host`, `access_key`, and `access_secret` for you to use.
@@ -49,13 +48,11 @@ var acr = new acrcloud({
 })
 ```
 
----
 ## TODO
 
 - ☐ Accept audio fingerprints in addition to audio files
 - ☐ All around error handling
 
----
 ## Changelog:
 
 ### 1.0.0
