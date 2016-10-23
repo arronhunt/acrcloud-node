@@ -56,7 +56,19 @@ acr.prototype.identify = function(path, callback) {
         url: "http://"+this.defaultOptions.host + this.defaultOptions.endpoint,
         method: 'POST',
         formData: formData
-    }, callback)
+    }, function(err, httpResponse, body) {
+        if (err) console.log(err);
+
+        var JSONBody = JSON.parse(body)
+        var code = JSONBody.status.code
+        switch (code) {
+            case 0:
+                callback(body)
+                break;
+            default:
+                console.log(`Houston, we have a problem... ${JSONBody.status.msg}`)
+        }
+    })
 }
 
 module.exports = acr
