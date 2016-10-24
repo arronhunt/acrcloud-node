@@ -7,8 +7,8 @@ var fs = require('fs')
 function acr(props) {
     this.defaultOptions = {
         host: props.host,
-        endpoint: '/v1/identify',
         signature_version: '1',
+        endpoint: '/v1/identify',
         data_type: props.data_type || 'audio',
         access_key: props.access_key,
         access_secret: props.access_secret,
@@ -39,7 +39,6 @@ acr.prototype.identify = function(path, callback) {
         timestamp)
 
     let signature = this.sign(stringToSign, this.defaultOptions.access_secret)
-
     let sampleData = new Buffer(fs.readFileSync(path))
 
     let formData = {
@@ -55,7 +54,7 @@ acr.prototype.identify = function(path, callback) {
     console.log("Posting track to "+this.defaultOptions.host)
 
     request.post({
-        url: "http://"+this.defaultOptions.host + this.defaultOptions.endpoint,
+        url: "http://"+this.defaultOptions.host+this.defaultOptions.endpoint,
         method: 'POST',
         formData: formData
     }, function(err, httpResponse, body) {
@@ -63,9 +62,10 @@ acr.prototype.identify = function(path, callback) {
 
         let JSONBody = JSON.parse(body)
         let code = JSONBody.status.code
+
         switch (code) {
             case 0:
-                callback(body)
+                callback(JSONBody.metadata)
                 break;
             default:
                 console.log(`Houston, we have a problem... ${JSONBody.status.msg}`)
