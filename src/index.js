@@ -27,6 +27,15 @@ acr.prototype.sign = function(signString, accessSecret) {
         .digest().toString('base64')
 }
 
+acr.prototype.getDataType = function(string, callback) {
+    fs.readFile(string, (err) => {
+        if (!err) {
+            return callback('audio')
+        }
+        return callback('fingerprint')
+    })
+}
+
 acr.prototype.identify = function(path, callback) {
     let current_date = new Date()
     let timestamp = current_date.getTime()/1000
@@ -62,13 +71,13 @@ acr.prototype.identify = function(path, callback) {
 
         let JSONBody = JSON.parse(body)
         let code = JSONBody.status.code
-
         switch (code) {
             case 0:
                 callback(JSONBody.metadata)
                 break;
             default:
                 console.log(`Houston, we have a problem... ${JSONBody.status.msg}`)
+                callback(JSONBody)
         }
     })
 }
