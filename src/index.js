@@ -60,8 +60,6 @@ acr.prototype.identify = function(path, callback) {
         timestamp:timestamp,
     }
 
-    console.log("Posting track to "+this.defaultOptions.host)
-
     request.post({
         url: "http://"+this.defaultOptions.host+this.defaultOptions.endpoint,
         method: 'POST',

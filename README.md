@@ -20,9 +20,9 @@ To identify an audio file, use the `identify()` function and pass it a file name
 ```
 let path = "/path-to-file.wav"
 
-acr.identify(path, function (err, httpResponse, body) {
+acr.identify(path, function (err, metadata) {
     if (err) console.log(err)
-    console.log(body)
+    console.log(metadata)
 })
 ```
 NOTE: At the time of writing, this function only returns the response body. You will need to write your own error handling and JSON parsing until this is included with the package.
