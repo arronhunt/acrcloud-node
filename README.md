@@ -1,4 +1,4 @@
-# ACRCloud API npm module
+# ACRCloud npm module
 
 ## How to use
 Before you can begin identifying audio with ACRCloud's API, you need to sign up for a free trial over at https://www.acrcloud.com and create an Audio & Video recognition project. This will generate a `host`, `access_key`, and `access_secret` for you to use.
@@ -16,16 +16,15 @@ var acr = new acrcloud({
 })
 ```
 ### Usage
-To identify an audio file, use the `identify()` function and pass it a file name from a local directory.
+To identify an audio file, use the `identify()` function and pass it a file buffer from a local directory.
 ```
-let path = "/path-to-file.wav"
+const fs = require('fs');
+const sample = fs.readFileSync("/path-to-file.wav");
 
-acr.identify(path, function (err, metadata) {
-    if (err) console.log(err)
+acr.identify(sample).then(metadata => {
     console.log(metadata)
-})
+});
 ```
-NOTE: At the time of writing, this function only returns the response body. You will need to write your own error handling and JSON parsing until this is included with the package.
 
 ### Audio file vs Audio fingerprint
 The ACRCloud API accepts either a raw audio file (WAV, MP3, AIFC, etc), or an audio fingerprint as the POST body. *At the time of writing, this module is only set up to accept a raw audio file.* Finterprints will be included in a future update, or you can modify the script yourself to accept them.
@@ -51,11 +50,17 @@ var acr = new acrcloud({
 ## TODO
 
 - ☐ Accept audio fingerprints in addition to audio files
-- ☐ All around error handling
 
 ## Changelog:
 
+### 1.1.0
+
+* Changed idenfity() method to use promises instead of callbacks
+* Added better error handling
+* Added example files
+
+
 ### 1.0.0
-```
-Initial commit
-```
+
+* Initial commit
+
