@@ -1,6 +1,6 @@
 const ACRCloud = require('../src');
 const fs = require('fs');
-const path = require("path");
+const path = require('path');
 
 const acr = new ACRCloud({
     host: 'identify-us-west-2.acrcloud.com',

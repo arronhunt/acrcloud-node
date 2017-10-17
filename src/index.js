@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 const FormData = require('form-data');
 const crypto = require('crypto');
-const fs = require('fs');
 
 class acr {
     constructor(props) {
@@ -85,9 +84,9 @@ class acr {
             }
             catch(error) {
                 reject(error);
-            };
+            }
         });
     }
-};
+}
 
 module.exports = acr;
