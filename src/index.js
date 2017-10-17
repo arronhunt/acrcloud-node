@@ -80,7 +80,10 @@ class acr {
                 fetch(`https://${this.host}/${this.endpoint}`, {method: 'POST', body})
                     .then(response => response.json())
                     .then(json => resolve(json))
-                    .catch(error => reject(error));
+                    .catch(error => reject({
+                        success: false,
+                        error
+                    }));
             }
             catch(error) {
                 reject(error);
