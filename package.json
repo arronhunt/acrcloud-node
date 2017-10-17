@@ -16,6 +16,15 @@
   "author": "Arron Hunt",
   "license": "ISC",
   "dependencies": {
-      "request": "latest"
+    "crypto": "^1.0.1",
+    "node-fetch": "^1.7.3",
+    "request": "latest"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1"
   }
 }

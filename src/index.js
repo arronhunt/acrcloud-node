@@ -1,83 +1,93 @@
-"use strict"
+const fetch = require('node-fetch');
+const FormData = require('form-data');
+const crypto = require('crypto');
+const fs = require('fs');
 
-var crypto = require('crypto')
-var request = require('request')
-var fs = require('fs')
+class acr {
+    constructor(props) {
+        const {
+            host,
+            access_key,
+            access_secret,
+            data_type,
+            audio_format,
+            sample_rate,
+            audio_channels
+        } = props;
+        this.host = host;
+        this.access_key = access_key;
+        this.access_secret = access_secret;
+        this.endpoint = '/v1/identify';
+        this.signature_version = '1';
+        this.data_type = data_type || 'audio';
 
-function acr(props) {
-    this.defaultOptions = {
-        host: props.host,
-        signature_version: '1',
-        endpoint: '/v1/identify',
-        data_type: props.data_type || 'audio',
-        access_key: props.access_key,
-        access_secret: props.access_secret,
-        audio_format: props.audio_format || '',
-        sample_rate: props.sample_rate || '',
-        audio_channels: props.audio_channels || ''
-    }
-}
-
-acr.prototype.buildStringToSign = function(method, uri, accessKey, dataType, signatureVersion, timestamp) {
-    return [method, uri, accessKey, dataType, signatureVersion, timestamp].join('\n')
-}
-acr.prototype.sign = function(signString, accessSecret) {
-    return crypto.createHmac('sha1', accessSecret)
-        .update(new Buffer(signString, 'utf-8'))
-        .digest().toString('base64')
-}
-
-acr.prototype.getDataType = function(string, callback) {
-    fs.readFile(string, (err) => {
-        if (!err) {
-            return callback('audio')
-        }
-        return callback('fingerprint')
-    })
-}
-
-acr.prototype.identify = function(path, callback) {
-    let current_date = new Date()
-    let timestamp = current_date.getTime()/1000
-
-    let stringToSign = this.buildStringToSign('POST',
-        this.defaultOptions.endpoint,
-        this.defaultOptions.access_key,
-        this.defaultOptions.data_type,
-        this.defaultOptions.signature_version,
-        timestamp)
-
-    let signature = this.sign(stringToSign, this.defaultOptions.access_secret)
-    let sampleData = new Buffer(fs.readFileSync(path))
-
-    let formData = {
-        sample: sampleData,
-        access_key:this.defaultOptions.access_key,
-        data_type:this.defaultOptions.data_type,
-        signature_version:this.defaultOptions.signature_version,
-        signature:signature,
-        sample_bytes:sampleData.length,
-        timestamp:timestamp,
+        // Optional settings
+        this.audio_format = audio_format || '';
+        this.sample_rate = sample_rate || '';
+        this.audio_channels = audio_channels || '';
     }
 
-    request.post({
-        url: "http://"+this.defaultOptions.host+this.defaultOptions.endpoint,
-        method: 'POST',
-        formData: formData
-    }, function(err, httpResponse, body) {
-        if (err) console.log(err);
+    //  Builds a signature string for making API requests
+    buildStringToSign(method, uri, accessKey, dataType, signatureVersion, timestamp) {
+        return [method, uri, accessKey, dataType, signatureVersion, timestamp].join('\n')
+    }
 
-        let JSONBody = JSON.parse(body)
-        let code = JSONBody.status.code
-        switch (code) {
-            case 0:
-                callback(JSONBody.metadata)
-                break;
-            default:
-                console.log(`Houston, we have a problem... ${JSONBody.status.msg}`)
-                callback(JSONBody)
-        }
-    })
-}
+    //  Signs a signature string
+    sign(string) {
+        return crypto.createHmac('sha1', this.access_secret)
+            .update(new Buffer(string, 'utf-8'))
+            .digest().toString('base64');
+    }
 
-module.exports = acr
+    //  Generates form data from an object
+    generateFormData(object) {
+        const form = new FormData();
+        Object.keys(object).forEach(key => {
+            form.append(key, object[key]);
+        });
+        return form;
+    }
+
+    // Identification
+    identify(filePath) {
+        return new Promise((resolve, reject) => {
+            try {
+                const current_date = new Date();
+                const timestamp = current_date.getTime()/1000;
+    
+                const stringToSign = this.buildStringToSign(
+                    'POST',
+                    this.endpoint,
+                    this.access_key,
+                    this.data_type,
+                    this.signature_version,
+                    timestamp
+                );
+    
+                const signature = this.sign(stringToSign, this.access_secret);
+                const sample = new Buffer(filePath);
+    
+                const formData = {
+                    sample,
+                    access_key: this.access_key,
+                    data_type: this.data_type,
+                    signature_version: this.signature_version,
+                    signature,
+                    sample_bytes: sample.length,
+                    timestamp
+                };
+
+                const body = this.generateFormData(formData);
+                fetch(`https://${this.host}/${this.endpoint}`, {method: 'POST', body})
+                    .then(response => response.json())
+                    .then(json => resolve(json))
+                    .catch(error => reject(error));
+            }
+            catch(error) {
+                reject(error);
+            };
+        });
+    }
+};
+
+module.exports = acr;
