@@ -56,6 +56,10 @@ var acr = new acrcloud({
 
 ## Changelog:
 
+### Current
+
+* Removed `crypto` package
+
 ### 1.1.0
 
 * Changed idenfity() method to use promises instead of callbacks
