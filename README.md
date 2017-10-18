@@ -10,13 +10,13 @@ Before you can begin identifying audio with ACRCloud's API, you need to sign up 
 To create a new instance of ACRCloud, all you need to do is install the module and require it in the head of your project.
 
 ```js
-var acrcloud = require('acrcloud')
+var acrcloud = require('acrcloud');
 
 var acr = new acrcloud({
     host: 'us-west-2.api.acrcloud.com',
     access_key: '*****',
     access_secret: '*****'
-})
+});
 ```
 ### Usage
 To identify an audio file, use the `identify()` function and pass it a file buffer from a local directory.
@@ -25,7 +25,7 @@ const fs = require('fs');
 const sample = fs.readFileSync("/path-to-file.wav");
 
 acr.identify(sample).then(metadata => {
-    console.log(metadata)
+    console.log(metadata);
 });
 ```
 
