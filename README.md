@@ -52,7 +52,10 @@ var acr = new acrcloud({
 
 ## TODO
 
-- ☐ Accept audio fingerprints in addition to audio files
+- ☐ Accept audio fingerprints in addition to audio files.
+- ☐ Remove fetch dependency and replace with https module.
+- ☐ Write better tests.
+- ☐ Move changelog to its own file.
 
 ## Changelog:
 
