@@ -14,7 +14,11 @@
     "song"
   ],
   "author": "Arron Hunt",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arronhunt/acrcloud-npm"
+  },
   "dependencies": {
     "crypto": "^1.0.1",
     "node-fetch": "^1.7.3"
