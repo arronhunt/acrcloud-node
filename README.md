@@ -1,5 +1,8 @@
 # ACRCloud npm module
 
+[![Node version](https://badge.fury.io/js/acrcloud.svg?style=flat)](https://www.npmjs.com/package/acrcloud)
+![Dependencies](https://david-dm.org/dwyl/acrcloud.svg)
+
 ## How to use
 Before you can begin identifying audio with ACRCloud's API, you need to sign up for a free trial over at https://www.acrcloud.com and create an Audio & Video recognition project. This will generate a `host`, `access_key`, and `access_secret` for you to use.
 
