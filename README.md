@@ -59,7 +59,11 @@ var acr = new acrcloud({
 
 ## Changelog:
 
-### Current
+### 1.1.4
+
+* Fixed an issue with missing form-data npm module.
+
+### 1.1.3
 
 * Removed `crypto` package
 
