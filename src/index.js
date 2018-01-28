@@ -13,7 +13,7 @@ class acr {
             sample_rate,
             audio_channels
         } = props;
-        this.host = host;
+        this.host = host || 'identify-us-west-2.acrcloud.com';
         this.access_key = access_key;
         this.access_secret = access_secret;
         this.endpoint = '/v1/identify';
@@ -28,7 +28,7 @@ class acr {
 
     //  Builds a signature string for making API requests
     buildStringToSign(method, uri, accessKey, dataType, signatureVersion, timestamp) {
-        return [method, uri, accessKey, dataType, signatureVersion, timestamp].join('\n')
+        return [method, uri, accessKey, dataType, signatureVersion, timestamp].join('\n');
     }
 
     //  Signs a signature string
@@ -48,47 +48,36 @@ class acr {
     }
 
     // Identification
-    identify(filePath) {
-        return new Promise((resolve, reject) => {
-            try {
-                const current_date = new Date();
-                const timestamp = current_date.getTime()/1000;
-    
-                const stringToSign = this.buildStringToSign(
-                    'POST',
-                    this.endpoint,
-                    this.access_key,
-                    this.data_type,
-                    this.signature_version,
-                    timestamp
-                );
-    
-                const signature = this.sign(stringToSign, this.access_secret);
-                const sample = new Buffer(filePath);
-    
-                const formData = {
-                    sample,
-                    access_key: this.access_key,
-                    data_type: this.data_type,
-                    signature_version: this.signature_version,
-                    signature,
-                    sample_bytes: sample.length,
-                    timestamp
-                };
+    identify(file_path) {
+        const current_date = new Date();
+        const timestamp = current_date.getTime()/1000;
 
-                const body = this.generateFormData(formData);
-                fetch(`https://${this.host}/${this.endpoint}`, {method: 'POST', body})
-                    .then(response => response.json())
-                    .then(json => resolve(json))
-                    .catch(error => reject({
-                        success: false,
-                        error
-                    }));
-            }
-            catch(error) {
-                reject(error);
-            }
-        });
+        const stringToSign = this.buildStringToSign(
+            'POST',
+            this.endpoint,
+            this.access_key,
+            this.data_type,
+            this.signature_version,
+            timestamp
+        );
+
+        const signature = this.sign(stringToSign, this.access_secret);
+        const sample = new Buffer(file_path);
+
+        const formData = {
+            sample,
+            access_key: this.access_key,
+            data_type: this.data_type,
+            signature_version: this.signature_version,
+            signature,
+            sample_bytes: sample.length,
+            timestamp
+        };
+
+        return fetch(`https://${this.host}/${this.endpoint}`, {
+            method: 'POST', 
+            body: this.generateFormData(formData)
+        }).then(response => response.json());
     }
 }
 
