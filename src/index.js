@@ -47,7 +47,11 @@ class acr {
         return form;
     }
 
-    // Identification
+    /**
+     * Identify an audio track from a file path
+     * @param {*} file_path the path to a local file
+     * @returns {Promise<object>} response JSON from ACRCloud https://www.acrcloud.com/docs/acrcloud/metadata/music/
+     */
     identify(file_path) {
         const current_date = new Date();
         const timestamp = current_date.getTime()/1000;
