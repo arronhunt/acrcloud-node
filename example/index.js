@@ -5,8 +5,8 @@ require('dotenv').config();
 
 const acr = new ACRCloud({
     host: 'identify-us-west-2.acrcloud.com',
-    access_key: process.env.ACCESS_KEY,
-    access_secret: process.env.ACCESS_SECRET
+    access_key: '9624db86f5f98fd102bf901387891b1f',
+    access_secret: 'svC40GDVeVO63oUMIxQBq4YhKPqbdqxirXI35kaO',
 });
 
 const filePath = path.join(__dirname, '/sample.m4a');

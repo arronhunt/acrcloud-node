@@ -34,7 +34,7 @@ class acr {
     //  Signs a signature string
     sign(string) {
         return crypto.createHmac('sha1', this.access_secret)
-            .update(new Buffer(string, 'utf-8'))
+            .update(new Buffer.from(string, 'utf-8'))
             .digest().toString('base64');
     }
 
@@ -49,10 +49,10 @@ class acr {
 
     /**
      * Identify an audio track from a file path
-     * @param {*} file_path the path to a local file
+     * @param {*} audio_sample a buffer from an audio sample of the audio you want to identify
      * @returns {Promise<object>} response JSON from ACRCloud https://www.acrcloud.com/docs/acrcloud/metadata/music/
      */
-    identify(file_path) {
+    identify(audio_sample) {
         const current_date = new Date();
         const timestamp = current_date.getTime()/1000;
 
@@ -66,15 +66,15 @@ class acr {
         );
 
         const signature = this.sign(stringToSign, this.access_secret);
-        const sample = new Buffer(file_path);
+        const buffer = new Buffer.from(audio_sample);
 
         const formData = {
-            sample,
+            buffer,
             access_key: this.access_key,
             data_type: this.data_type,
             signature_version: this.signature_version,
             signature,
-            sample_bytes: sample.length,
+            sample_bytes: buffer.length,
             timestamp
         };
 
