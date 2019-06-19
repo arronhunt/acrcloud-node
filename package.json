@@ -2,9 +2,10 @@
   "name": "acrcloud",
   "version": "1.2.1",
   "description": "Recognize audio recordings with the ACRCloud recognition API",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "example": "node ./example/index.js"
+    "example": "node ./example/index.js",
+    "build": "tsc ./src/index.ts --outDir ./lib"
   },
   "keywords": [
     "acr",
@@ -25,12 +26,11 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "dotenv": "^4.0.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.2.0",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "mocha": "^4.0.1"
+    "typescript": "^3.5.2"
   }
 }
