@@ -31,7 +31,7 @@ class acr {
             audio_format,
             sample_rate,
             audio_channels
-        } = config;
+        }: acr = config;
         this.host = host || 'identify-us-west-2.acrcloud.com';
         this.access_key = access_key;
         this.access_secret = access_secret;
