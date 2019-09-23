@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+- Added TypeScript
 - Renamed project from `acrcloud-npm` to `acrcloud-node`
 - Moved changelog to its own file.
 
