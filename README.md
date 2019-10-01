@@ -1,7 +1,7 @@
 # ACRCloud npm module
 
 [![Node version](https://badge.fury.io/js/acrcloud.svg?style=flat)](https://www.npmjs.com/package/acrcloud)
-![Dependencies](https://david-dm.org/dwyl/acrcloud.svg)
+![Dependencies](https://david-dm.org/arronhunt/acrcloud-node.svg)
 
 ## How to use
 
@@ -12,9 +12,9 @@ Before you can begin identifying audio with ACRCloud's API, you need to sign up 
 To create a new instance of ACRCloud, all you need to do is install the module and require it in the head of your project.
 
 ```js
-var acrcloud = require("acrcloud");
+const acrcloud = require("acrcloud");
 
-var acr = new acrcloud({
+const acr = new acrcloud({
   host: "us-west-2.api.acrcloud.com",
   access_key: "*****",
   access_secret: "*****"
@@ -47,7 +47,7 @@ By default, creating a new instance will assume that your audio file has all the
 - `audio_channels` If your audio file does not have audio header, this parameter should be included. Allowed values: 1, 2
 
 ```js
-var acr = new acrcloud({
+const acr = new acrcloud({
   host: "us-west-2.api.acrcloud.com",
   access_key: "*****",
   access_secret: "*****",
