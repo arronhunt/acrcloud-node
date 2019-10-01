@@ -1,6 +1,6 @@
 ## Changelog:
 
-### Unreleased
+### 1.4.0
 
 - Added TypeScript
 - Renamed project from `acrcloud-npm` to `acrcloud-node`
